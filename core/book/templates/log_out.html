@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+{% if request.user.is_authenticated %}
+<div class="container mt-5 mx-auto col-md-3 card shadow p-3" style="background-color: #f7f7f7;">
+
+		<form action="" method="post">
+			{% csrf_token %}
+            <p>Are you sure you want to log out? </p>
+            <button type="submit">Yes, Logout</button>
+		</form>
+
+</div>
+{% else %}
+<p>You are already logged in. Do you want to <a href="/logout/">Log out</a>? </p>
+{% endif %}
+{% endblock %}
