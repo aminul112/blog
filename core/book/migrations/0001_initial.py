@@ -7,25 +7,40 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Emenitites',
+            name="Emenitites",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Blog',
+            name="Blog",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('blog_name', models.CharField(max_length=100)),
-                ('blog_description', models.TextField()),
-                ('price', models.IntegerField()),
-                ('emenities', models.ManyToManyField(to='book.emenitites')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("blog_name", models.CharField(max_length=100)),
+                ("blog_description", models.TextField()),
+                ("price", models.IntegerField()),
+                ("emenities", models.ManyToManyField(to="book.emenitites")),
             ],
         ),
     ]

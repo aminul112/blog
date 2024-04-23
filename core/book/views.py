@@ -8,8 +8,10 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (
-    LogoutView as BaseLogoutView, PasswordChangeView as BasePasswordChangeView,
-    PasswordResetDoneView as BasePasswordResetDoneView, PasswordResetConfirmView as BasePasswordResetConfirmView,
+    LogoutView as BaseLogoutView,
+    PasswordChangeView as BasePasswordChangeView,
+    PasswordResetDoneView as BasePasswordResetDoneView,
+    PasswordResetConfirmView as BasePasswordResetConfirmView,
 )
 
 
@@ -17,21 +19,21 @@ from django.contrib.auth.views import (
 @login_required(login_url="/login/")
 def home(request):
     emenities = Emenitites.objects.all()
-    context = {'emenities': emenities}
-    return render(request, 'home.html', context)
+    context = {"emenities": emenities}
+    return render(request, "home.html", context)
 
 
 @login_required(login_url="/login/")
 def api_blogs(request):
     blogs_objs = Blog.objects.all()
 
-    price = request.GET.get('price')
+    price = request.GET.get("price")
     if price:
         blogs_objs = blogs_objs.filter(price__lte=price)
 
-    emenities = request.GET.get('emenities')
+    emenities = request.GET.get("emenities")
     if emenities:
-        emenities = emenities.split(',')
+        emenities = emenities.split(",")
         em = []
         for e in emenities:
             try:
@@ -43,9 +45,9 @@ def api_blogs(request):
     payload = []
     for blog_obj in blogs_objs:
         result = {}
-        result['blog_name'] = blog_obj.blog_name
-        result['blog_description'] = blog_obj.blog_description
-        result['price'] = blog_obj.price
+        result["blog_name"] = blog_obj.blog_name
+        result["blog_description"] = blog_obj.blog_description
+        result["price"] = blog_obj.price
         payload.append(result)
 
     return JsonResponse(payload, safe=False)
@@ -55,51 +57,51 @@ def login_page(request):
     if request.method == "POST":
 
         try:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+            username = request.POST.get("username")
+            password = request.POST.get("password")
             user_obj = User.objects.filter(username=username)
             if not user_obj.exists():
                 messages.error(request, "Username not found")
-                return redirect('/login/')
+                return redirect("/login/")
             user_obj = authenticate(username=username, password=password)
             if user_obj:
                 login(request, user_obj)
-                return redirect('/')
+                return redirect("/")
             messages.error(request, "Wrong Password")
-            return redirect('/login/')
+            return redirect("/login/")
 
         except Exception as e:
             messages.error(request, " Somthing went wrong")
-            return redirect('/register/')
+            return redirect("/register/")
 
     return render(request, "login.html")
-
 
 
 def logout_view(request):
     if request.method == "POST":
         logout(request)
-        return redirect('/login/')
+        return redirect("/login/")
 
     return render(request, "log_out.html")
+
 
 def register_page(request):
     if request.method == "POST":
         try:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+            username = request.POST.get("username")
+            password = request.POST.get("password")
             user_obj = User.objects.filter(username=username)
             if user_obj.exists():
                 messages.error(request, "Username is taken")
-                return redirect('/register/')
+                return redirect("/register/")
             user_obj = User.objects.create(username=username)
             user_obj.set_password(password)
             user_obj.save()
             messages.success(request, "Account created")
-            return redirect('/login/')
+            return redirect("/login/")
 
         except Exception as e:
             messages.error(request, " Somthing went wrong")
-            return redirect('/register/')
+            return redirect("/register/")
 
     return render(request, "register.html")
