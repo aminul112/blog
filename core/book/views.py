@@ -1,18 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+
 
 from .models import *
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import (
-    LogoutView as BaseLogoutView,
-    PasswordChangeView as BasePasswordChangeView,
-    PasswordResetDoneView as BasePasswordResetDoneView,
-    PasswordResetConfirmView as BasePasswordResetConfirmView,
-)
 
 
 # Create your views here.
@@ -23,7 +16,9 @@ def home(request):
     return render(request, "home.html", context)
 
 
-@login_required(login_url="/login/")
+# login_required(login_url="/login/")
+
+
 def api_blogs(request):
     blogs_objs = Blog.objects.all()
 
@@ -77,7 +72,7 @@ def login_page(request):
     return render(request, "login.html")
 
 
-def logout_view(request):
+def logout_page(request):
     if request.method == "POST":
         logout(request)
         return redirect("/login/")
